@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clases Particulares - Yanina Frances</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="encabezado">
+    <h1>Clases Particulares de Matemática</h1>
+    <p>Con Yanina – Acompañamiento y preparación personalizada</p>
+    <button id="toggle-theme">🌓 Cambiar tema</button>
+  </header>
+
+  <main class="container">
+    <!-- SOBRE MÍ -->
+    <section class="sobre-mi">
+      <div class="sobre-mi-contenido">
+        <img src="yanina.png" alt="Foto de Yanina" class="foto-yanina" />
+        <div class="texto-sobre-mi">
+          <h2>∑ ¿Quién soy?</h2>
+          <p>Soy Yanina Frances, profesora con más de 20 años de experiencia enseñando Matemática a estudiantes de secundaria. Doy clases virtuales y presenciales, adaptadas a las necesidades de cada persona.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFERTA -->
+    <section class="oferta">
+      <h2>¿Qué ofrezco?</h2>
+      <ul>
+        <li>Apoyo escolar (secundaria)</li>
+        <li>Preparación para ingresos universitarios (Ford, Cereijo, Roca, etc)</li>
+        <li>Clases de repaso y resolución de ejercicios</li>
+        <li>Acompañamiento para exámenes y parciales</li>
+      </ul>
+
+      <div class="etiquetas">
+        <span class="chip">Clases grupales</span>
+        <span class="chip">Retroalimentación</span>
+        <span class="chip">Seguimiento personalizado</span>
+        <span class="chip">Incrementar confianza</span>
+        <span class="chip">Mejorar comprensión</span>
+        <span class="chip">Aplicación de conceptos</span>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+<section class="testimonios">
+  <h2 id="titulo-testimonios">📣 Testimonios</h2>
+  <!-- Buscador -->
+  <div class="buscador-container">
+    <select id="criterio-busqueda">
+      <option value="todo">🔍 Todo</option>
+      <option value="nombre">👤 Nombre</option>
+      <option value="mensaje">💬 Mensaje</option>
+    </select>
+    
+    <input type="text" id="buscador-testimonios" placeholder="Escribí para buscar..." />
+  </div>
+  
+
+  <div id="testimonios"></div>
+  <div id="paginacion" class="paginacion"></div>
+
+</section>
+
+
+    <!-- FORMULARIO -->
+    <section class="dejar-testimonio">
+      <h2>📝 Dejar un testimonio</h2>
+      <form id="form-testimonio">
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+        <textarea name="mensaje" placeholder="Escribí tu experiencia..." required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- BOTÓN WHATSAPP -->
+  <a id="whatsappBtn" class="whatsapp-btn" href="#" target="_blank">
+    <img src="logowspp.png" alt="WhatsApp">
+    Escribirme por WhatsApp
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="pie">
+    <div class="footer-content">
+      
+      <!-- LADO IZQUIERDO -->
+      <div class="footer-extra">
+        <h3>📚 Yanina Frances</h3>
+        <p>Cualquier consulta puede ser realizada al Whatsapp.</p>
+        <p>Sera respondido a la brevedad.</p>
+      </div>
+  
+      <!-- LADO DERECHO (MAPA + INFO) -->
+      <div class="footer-info">
+        <p class="footer-ubicacion-titulo">📍 Zona de clases presenciales</p>
+        <p>La Pista 1765, Ingeniero Maschwitz</p>
+        <div class="footer-map">
+          <iframe
+            src="https://www.google.com/maps?q=La+Pista+1765,+Ingeniero+Maschwitz,+Argentina&output=embed"
+            loading="lazy"
+            allowfullscreen=""
+          ></iframe>
+        </div>
+      </div>
+  
+    </div>
+  </footer>
+  
+
+  <script src="script.js"></script>
+</body>
+</html>

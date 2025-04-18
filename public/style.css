@@ -1,0 +1,373 @@
+/* ---------------------- RESET ---------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding-bottom: 100px; /* espacio para botón flotante */
+}
+
+main {
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ---------------------- TEMAS ---------------------- */
+body.light {
+  background-color: #fdf6f0;
+  color: #333;
+}
+
+body.dark {
+  background-color: #1c1c1c;
+  color: #eee;
+}
+
+body.light .encabezado,
+body.light .pie {
+  background-color: #ffe8d6;
+  color: #5a2e0d;
+}
+
+body.dark .encabezado,
+body.dark .pie {
+  background-color: #222;
+  color: #f0f0f0;
+}
+
+/* ---------------------- HEADER ---------------------- */
+.encabezado {
+  text-align: center;
+  padding: 30px 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.encabezado h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.encabezado p {
+  font-size: 16px;
+}
+
+/* ---------------------- BOTÓN TEMA ---------------------- */
+#toggle-theme {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #8b4513;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+#toggle-theme:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------------------- SOBRE MÍ ---------------------- */
+.sobre-mi-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.foto-yanina {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 768px) {
+  .sobre-mi-contenido {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .foto-yanina {
+    margin-right: 20px;
+  }
+  .texto-sobre-mi {
+    flex: 1;
+  }
+}
+
+/* ---------------------- LISTAS Y SECCIONES ---------------------- */
+section {
+  margin-bottom: 40px;
+}
+
+section h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: inherit;
+}
+
+section p,
+section li {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li::before {
+  content: "✔️ ";
+  margin-right: 5px;
+  color: #25D366;
+}
+
+/* ---------------------- ETIQUETAS ---------------------- */
+.etiquetas {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chip {
+  background-color: #ffe8d6;
+  color: #5a2e0d;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background-color: #ffd5b5;
+  cursor: default;
+}
+
+/* ---------------------- CONTENEDOR TESTIMONIOS ---------------------- */
+#testimonios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* ---------------------- BLOQUES DE TESTIMONIOS ---------------------- */
+.testimonio {
+  background: rgba(255, 232, 214, 0.4);
+  padding: 15px 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aparecer 0.3s ease-out forwards;
+}
+
+body.dark .testimonio {
+  background: #2a2a2a;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------- FORMULARIO ---------------------- */
+.dejar-testimonio {
+  background: #fff8f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+body.dark .dejar-testimonio {
+  background: #2d2d2d;
+}
+
+.dejar-testimonio input,
+.dejar-testimonio textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+body.dark .dejar-testimonio input,
+body.dark .dejar-testimonio textarea {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+
+.dejar-testimonio button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #25D366;
+  color: white;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+/* ---------------------- BUSCADOR ---------------------- */
+.buscador-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#criterio-busqueda,
+#buscador-testimonios {
+  height: 45px;
+  padding: 0 15px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background-color: white;
+  color: #333;
+}
+
+#buscador-testimonios {
+  width: 100%;
+  max-width: 350px;
+}
+
+
+/* ---------------------- BOTÓN WHATSAPP ---------------------- */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #25D366;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 999;
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ebe5d;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.whatsapp-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------------------- FOOTER ---------------------- */
+.pie {
+  padding: 30px 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footer-extra {
+  flex: 1;
+  max-width: 400px;
+}
+
+.footer-extra h3 {
+  font-size: 18px;
+  color: #8b4513;
+  margin-bottom: 10px;
+}
+
+.footer-extra p {
+  font-size: 14px;
+}
+
+.footer-info {
+  text-align: right;
+  max-width: 300px;
+}
+
+.footer-ubicacion-titulo {
+  font-weight: bold;
+  font-size: 16px;
+  color: #8b4513;
+  margin-bottom: 5px;
+}
+
+.footer-map iframe {
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+  margin-top: 10px;
+}
+
+/* ---------------------- PAGINACIÓN ---------------------- */
+.paginacion {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.paginacion button {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  margin: 0 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.paginacion button:hover:enabled {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.paginacion button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
