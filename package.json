@@ -1,15 +1,14 @@
 {
   "name": "clasesmatematica",
   "version": "1.0.0",
-  "description": "",
-  "main": "db.js",
+  "description": "Sitio web y backend para clases de matemática con testimonios de alumnos.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["express", "mysql", "nodejs", "testimonios", "clases", "matematica"],
+  "author": "Lucas Fernández",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
