@@ -189,3 +189,29 @@ body.dark .input-wrapper {
 .cerrar-btn:hover {
   background-color: #555;
 }
+
+#admin-link {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: #8b4513;
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+
+#admin-link:hover {
+  background-color: #a55a2a;
+}
+
+#admin-link {
+  opacity: 0.6;
+  font-size: 20px;
+  bottom: 10px;
+  right: 10px;
+}

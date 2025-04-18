@@ -25,7 +25,6 @@
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
     }
 
     label {
@@ -61,38 +60,47 @@
       text-align: center;
     }
 
-    .lista-disponibilidades {
+    .disponibilidad-card {
       max-width: 500px;
-      margin: 30px auto;
+      margin: 15px auto;
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-
-    .disponibilidad-item {
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .disponibilidad-item:last-child {
-      border-bottom: none;
+    .disponibilidad-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .disponibilidad-item button {
-      background: #e74c3c;
+    .disponibilidad-info div {
+      font-size: 15px;
+    }
+
+    .disponibilidad-info .fecha {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .disponibilidad-card button {
+      background-color: #e74c3c;
       color: white;
       border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
+      padding: 6px 16px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
     }
 
-    .disponibilidad-item button:hover {
-      background: #c0392b;
+    .disponibilidad-card button:hover {
+      background-color: #c0392b;
     }
   </style>
 </head>
@@ -113,97 +121,79 @@
     <div class="mensaje" id="mensaje"></div>
   </form>
 
-  <section id="lista-disponibilidad" style="max-width: 500px; margin: 30px auto;">
+  <section style="max-width: 500px; margin: 30px auto;">
     <h2>📅 Fechas cargadas</h2>
     <div id="disponibilidades"></div>
   </section>
-  
 
   <script>
+    const mensaje = document.getElementById('mensaje');
+
     async function cargarDisponibilidades() {
       const contenedor = document.getElementById('disponibilidades');
       contenedor.innerHTML = '';
-  
+
       const res = await fetch('/api/clases');
       const datos = await res.json();
-  
+
       datos.forEach(dispo => {
         const fecha = new Date(dispo.fecha).toLocaleDateString('es-AR');
-        const inicio = dispo.hora_inicio.slice(0, 5); // "15:30:00" -> "15:30"
+        const inicio = dispo.hora_inicio.slice(0, 5);
         const fin = dispo.hora_fin.slice(0, 5);
-  
-        const div = document.createElement('div');
-        div.style.display = 'flex';
-        div.style.justifyContent = 'space-between';
-        div.style.alignItems = 'center';
-        div.style.gap = '10px';
-        div.style.flexWrap = 'wrap';
-        div.style.padding = '16px';
-        div.style.marginBottom = '15px';
-        div.style.background = '#fff';
-        div.style.borderRadius = '12px';
-        div.style.boxShadow = '0 2px 6px rgba(0,0,0,0.05)';
 
-  
+        const div = document.createElement('div');
+        div.className = 'disponibilidad-card';
         div.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="font-size: 24px;">📅</div>
-            <div>
-            <div style="font-weight: bold; font-size: 16px;">${fecha}</div>
-            <div style="font-size: 14px; color: #555;">🕒 ${inicio} a ${fin}</div>
-            </div>
-        </div>
-        <button onclick="eliminarDisponibilidad(${dispo.id})" style="
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            height: 36px;
-            align-self: center;
-        ">Eliminar</button>
+          <div class="disponibilidad-info">
+            <div class="fecha">📅 ${fecha}</div>
+            <div>🕒 ${inicio} a ${fin}</div>
+          </div>
+          <button onclick="eliminarDisponibilidad(${dispo.id})">Eliminar</button>
         `;
 
-  
         contenedor.appendChild(div);
       });
     }
-  
+
     async function eliminarDisponibilidad(id) {
       if (!confirm('¿Estás seguro de eliminar esta franja?')) return;
-  
+
       await fetch(`/api/clases/${id}`, { method: 'DELETE' });
       cargarDisponibilidades();
     }
-  
-    // Recargar cuando se envía una nueva disponibilidad
+
     document.getElementById('form-disponibilidad').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const mensaje = document.getElementById('mensaje');
-  
+
       const fecha = document.getElementById('fecha').value;
       const inicio = document.getElementById('inicio').value;
       const fin = document.getElementById('fin').value;
-  
+
       if (!fecha || !inicio || !fin) {
         mensaje.textContent = '⚠️ Completá todos los campos.';
         return;
       }
-  
-      const hoy = new Date().toISOString().split('T')[0];
-      if (fecha < hoy) {
-        mensaje.textContent = '❌ No se puede cargar una fecha pasada.';
+
+      const ahora = new Date();
+      const fechaInicio = new Date(`${fecha}T${inicio}`);
+      const fechaFin = new Date(`${fecha}T${fin}`);
+
+      if (fechaInicio < ahora) {
+        mensaje.textContent = '⚠️ No se puede cargar una disponibilidad en el pasado.';
         return;
       }
-  
+
+      if (fechaFin <= fechaInicio) {
+        mensaje.textContent = '⚠️ La hora de fin debe ser posterior a la hora de inicio.';
+        return;
+      }
+
       const res = await fetch('/api/clases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fecha, hora_inicio: inicio, hora_fin: fin })
       });
-  
+
       if (res.ok) {
         mensaje.textContent = '✅ Disponibilidad agregada correctamente.';
         e.target.reset();
@@ -213,10 +203,8 @@
         mensaje.textContent = `❌ ${error.error}`;
       }
     });
-  
-    // Inicial
+
     cargarDisponibilidades();
   </script>
-  
 </body>
 </html>

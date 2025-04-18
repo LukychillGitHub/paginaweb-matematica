@@ -9,8 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
-      nowIndicator: true,
-      events: '/api/clases/eventos' // 👈 Carga dinámica desde tu API
+      slotMinTime: "00:00:00",
+      slotMaxTime: "23:59:59",
+      allDaySlot: false,
+      events: '/api/clases/eventos',
+      slotDuration: "00:60:00"
     });
   
     calendar.render();

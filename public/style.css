@@ -425,37 +425,118 @@ body.dark .dejar-testimonio textarea {
 
 /* ------------- CALENDARIO ------------------- */
 
+/* Contenedor principal del calendario */
 #calendar {
-  background-color: white;
-  border-radius: 12px;
+  max-width: 100%;
+  margin: 30px auto;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+  overflow-x: auto;
 }
 
-/* ------------- ADAPTAR CALENDARIO AL MODO OSCURO ------------------- */
-
-body.dark .fc {
-  background-color: #2a2a2a;
-  color: #fff;
+/* Tema oscuro */
+body.dark #calendar {
+  background-color: #2b2b2b;
 }
 
-body.dark .fc-toolbar-title,
-body.dark .fc-daygrid-day-number,
-body.dark .fc-timegrid-slot-label,
-body.dark .fc-col-header-cell-cushion {
-  color: #fff;
+/* Estilos generales de botones y cabecera */
+.fc .fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8b4513;
 }
 
-body.dark .fc-button {
-  background-color: #444;
+body.dark .fc .fc-toolbar-title {
+  color: #f0f0f0;
+}
+
+.fc .fc-button {
+  background-color: #8b4513;
   border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.fc .fc-button:hover {
+  background-color: #a55a2a;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: #a55a2a;
+}
+
+/* Texto general de celdas */
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+body.dark .fc .fc-col-header-cell-cushion,
+body.dark .fc .fc-daygrid-day-number {
   color: #fff;
 }
 
-body.dark .fc-button:hover {
-  background-color: #666;
+/* Estilo de celdas y eventos */
+.fc .fc-daygrid-day-frame,
+.fc .fc-timegrid-slot {
+  background-color: transparent;
+  transition: background-color 0.3s ease;
 }
 
-body.dark .fc-daygrid-day {
-  background-color: #1f1f1f;
+.fc .fc-event {
+  background-color: #90ee90 !important;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #000;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  #calendar {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fc .fc-button {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 16px;
+  }
+}
+
+#admin-link {
+  position: flex;
+  bottom: 40px;
+  right: 20px;
+  background-color: #8b4513;
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+
+#admin-link:hover {
+  background-color: #a55a2a;
 }
