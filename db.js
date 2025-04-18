@@ -1,20 +1,21 @@
-// db.js
 const mysql = require('mysql2');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST, // 👈 Cambia esto por el host de tu base de datos (localhost o IP)
-  user: process.env.MYSQLUSER,            // o el usuario que uses en tu MySQL
-  password: process.env.MYSQLPASSWORD,            // tu contraseña, si tenés
-  port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE // 👈 acá va el nombre de la base que creaste
+  host: isProduction ? process.env.MYSQLHOST : process.env.DB_HOST,
+  user: isProduction ? process.env.MYSQLUSER : process.env.DB_USER,
+  password: isProduction ? process.env.MYSQLPASSWORD : process.env.DB_PASSWORD,
+  port: isProduction ? process.env.MYSQLPORT : process.env.DB_PORT,
+  database: isProduction ? process.env.MYSQLDATABASE : process.env.DB_NAME
 });
 
 connection.connect(err => {
   if (err) {
-    console.error('Error de conexión:', err);
+    console.error('❌ Error de conexión a MySQL:', err.message);
     return;
   }
-  console.log('✅ Conectado a MySQL - testimonios_alumnos');
+  console.log('✅ Conectado a MySQL correctamente');
 });
 
 module.exports = connection;
