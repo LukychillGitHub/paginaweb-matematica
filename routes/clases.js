@@ -75,5 +75,13 @@ router.get('/eventos', (req, res) => {
     });
   });
   
+  // Eliminar una disponibilidad por ID
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM disponibilidad WHERE id = ?', [id], (err) => {
+      if (err) return res.status(500).json({ error: 'Error al eliminar' });
+      res.json({ ok: true });
+    });
+  });
   
 module.exports = router;
