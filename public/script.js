@@ -1,5 +1,5 @@
 // Botón de WhatsApp
-const numeroBot = '5491141792389';
+const numeroBot = '5491163374826';
 const mensajePredefinido = 'Hola Yanina! Quiero hacer una consulta';
 const link = `https://wa.me/${numeroBot}?text=${encodeURIComponent(mensajePredefinido)}`;
 document.getElementById('whatsappBtn').setAttribute('href', link);
