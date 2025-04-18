@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+
   <title>Clases Particulares - Yanina Frances</title>
   <link rel="stylesheet" href="style.css" />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+  <script src="/calendario.js"></script> <!-- lo creamos abajo -->
 </head>
 <body>
 
@@ -80,7 +84,15 @@
         <button type="submit">Enviar</button>
       </form>
     </section>
+
+    <section id="calendario">
+      <h2>🗓️ Disponibilidad de clases</h2>
+      <div id="calendar"></div>
+    </section>
+    
   </main>
+
+
 
   <!-- BOTÓN WHATSAPP -->
   <a id="whatsappBtn" class="whatsapp-btn" href="#" target="_blank">
