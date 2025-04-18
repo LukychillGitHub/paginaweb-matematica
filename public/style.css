@@ -426,7 +426,9 @@ body.dark .dejar-testimonio textarea {
 /* ------------- CALENDARIO ------------------- */
 
 #calendar {
-  max-width: 900px;
-  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
   padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+
