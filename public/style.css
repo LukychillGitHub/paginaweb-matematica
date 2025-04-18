@@ -77,7 +77,7 @@ body.dark .pie {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 10px 15px;
+  padding: 8px 10px;
   border: none;
   background-color: #8b4513;
   color: white;
@@ -85,21 +85,55 @@ body.dark .pie {
   cursor: pointer;
   z-index: 999;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-}
-
-@media (max-width: 600px) {
-  #toggle-theme {
-    top: 10px;
-    right: 10px;
-    padding: 5px 12px;
-  }
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
 }
 
 #toggle-theme:hover {
   transform: translateY(-2px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
+
+#toggle-theme .icon {
+  font-size: 1.2rem;
+}
+
+#toggle-theme .texto {
+  transition: opacity 0.3s ease;
+}
+
+/* Colores según tema */
+body.light #toggle-theme {
+  background-color: #8b4513; /* marrón para tema claro */
+  color: white;
+}
+
+body.dark #toggle-theme {
+  background-color: #f4f4f4; /* claro para tema oscuro */
+  color: #222;
+}
+
+@media (max-width: 600px) {
+  #toggle-theme {
+    top: 10px;
+    right: 10px;
+    padding: 12px;
+    border-radius: 50%; /* 🔁 redondo real */
+    width: 45px;
+    height: 45px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  #toggle-theme .texto {
+    display: none;
+  }
+}
+
 
 /* ---------------------- SOBRE MÍ ---------------------- */
 .sobre-mi-contenido {

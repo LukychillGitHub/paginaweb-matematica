@@ -5,11 +5,14 @@ const link = `https://wa.me/${numeroBot}?text=${encodeURIComponent(mensajePredef
 document.getElementById('whatsappBtn').setAttribute('href', link);
 
 // Cambio de tema claro/oscuro
-document.getElementById("toggle-theme").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  document.body.classList.toggle("light");
-  localStorage.setItem("tema", document.body.classList.contains("dark") ? "dark" : "light");
+const toggleBtn = document.getElementById('toggle-theme');
+const icon = toggleBtn.querySelector('.icon');
+
+toggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  icon.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
 });
+
 
 window.addEventListener("DOMContentLoaded", () => {
   const temaGuardado = localStorage.getItem("tema") || "light";
@@ -17,25 +20,6 @@ window.addEventListener("DOMContentLoaded", () => {
   cargarTestimonios();
   actualizarCantidadTestimonios(); // 👈 contador en el título
 });
-
-// Función para cargar testimonios
-function cargarTestimonios() {
-  fetch('/api/testimonios')
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById('testimonios');
-      container.innerHTML = '';
-      data.forEach(t => {
-        container.innerHTML += `
-          <div class="testimonio">
-            <p>"${t.mensaje}"</p>
-            <span>- ${t.nombre}</span>
-          </div>
-        `;
-      });
-    })
-    .catch(err => console.error('Error al cargar testimonios:', err));
-}
 
 // Función para mostrar cantidad total en el título
 function actualizarCantidadTestimonios() {
