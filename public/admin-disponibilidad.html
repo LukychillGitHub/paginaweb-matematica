@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cargar Disponibilidad - Yanina</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px 20px;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #8b4513;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    select, input[type="time"], button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #25D366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1ebe5d;
+    }
+
+    .mensaje {
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📅 Cargar Disponibilidad</h1>
+
+  <form id="form-disponibilidad">
+    <label for="dia">Día de la semana</label>
+    <select id="dia" required>
+      <option value="">Seleccionar</option>
+      <option value="1">Lunes</option>
+      <option value="2">Martes</option>
+      <option value="3">Miércoles</option>
+      <option value="4">Jueves</option>
+      <option value="5">Viernes</option>
+      <option value="6">Sábado</option>
+      <option value="0">Domingo</option>
+    </select>
+
+    <label for="inicio">Hora de inicio</label>
+    <input type="time" id="inicio" required>
+
+    <label for="fin">Hora de fin</label>
+    <input type="time" id="fin" required>
+
+    <button type="submit">Agregar disponibilidad</button>
+    <div class="mensaje" id="mensaje"></div>
+  </form>
+
+  <script>
+    document.getElementById('form-disponibilidad').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dia = document.getElementById('dia').value;
+      const inicio = document.getElementById('inicio').value;
+      const fin = document.getElementById('fin').value;
+      const mensaje = document.getElementById('mensaje');
+
+      if (!dia || !inicio || !fin) {
+        mensaje.textContent = '⚠️ Completá todos los campos.';
+        return;
+      }
+
+      const res = await fetch('/api/clases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dia_semana: parseInt(dia),
+          hora_inicio: inicio,
+          hora_fin: fin
+        })
+      });
+
+      if (res.ok) {
+        mensaje.textContent = '✅ Disponibilidad agregada correctamente.';
+        e.target.reset();
+      } else {
+        mensaje.textContent = '❌ Hubo un error al guardar.';
+      }
+    });
+  </script>
+
+</body>
+</html>

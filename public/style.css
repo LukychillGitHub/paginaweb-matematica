@@ -432,3 +432,30 @@ body.dark .dejar-testimonio textarea {
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* ------------- ADAPTAR CALENDARIO AL MODO OSCURO ------------------- */
+
+body.dark .fc {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+body.dark .fc-toolbar-title,
+body.dark .fc-daygrid-day-number,
+body.dark .fc-timegrid-slot-label,
+body.dark .fc-col-header-cell-cushion {
+  color: #fff;
+}
+
+body.dark .fc-button {
+  background-color: #444;
+  border: none;
+  color: #fff;
+}
+
+body.dark .fc-button:hover {
+  background-color: #666;
+}
+
+body.dark .fc-daygrid-day {
+  background-color: #1f1f1f;
+}
