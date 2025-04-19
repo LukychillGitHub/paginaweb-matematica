@@ -58,7 +58,8 @@ router.get('/eventos', (req, res) => {
     if (err) return res.status(500).json({ error: 'Error al cargar eventos' });
 
     const eventos = results.flatMap(row => {
-      const fecha = row.fecha.toISOString().split('T')[0]; // "YYYY-MM-DD"
+      const fechaObj = new Date(row.fecha);
+      const fecha = `${fechaObj.getFullYear()}-${(fechaObj.getMonth() + 1).toString().padStart(2, '0')}-${fechaObj.getDate().toString().padStart(2, '0')}`;
       const start = `${fecha}T${row.hora_inicio}`;
       const end = `${fecha}T${row.hora_fin}`;
 
@@ -67,14 +68,14 @@ router.get('/eventos', (req, res) => {
           title: 'Disponible',
           start,
           end,
-          display: 'auto',       // visible como texto (vista mensual)
+          display: 'auto',
           color: '#90ee90'
         },
         {
           title: 'Disponible',
           start,
           end,
-          display: 'background', // visible como fondo (vista semanal/día)
+          display: 'background',
           color: '#90ee90'
         }
       ];
