@@ -12,11 +12,15 @@ router.get('/', (req, res) => {
 
 // ✅ Agregar nueva franja con fecha exacta
 router.post('/', (req, res) => {
-  const { fecha, hora_inicio, hora_fin } = req.body;
+  let { fecha, hora_inicio, hora_fin } = req.body;
 
   if (!fecha || !hora_inicio || !hora_fin) {
     return res.status(400).json({ error: 'Faltan datos' });
   }
+
+  // ✅ Corregir desfase de fecha por zona horaria
+  const fechaLocal = new Date(fecha + 'T00:00:00');
+  const fechaFormateada = fechaLocal.toISOString().slice(0, 10); // yyyy-mm-dd
 
   const querySolapado = `
     SELECT * FROM disponibilidad
@@ -26,7 +30,7 @@ router.post('/', (req, res) => {
     )
   `;
 
-  db.query(querySolapado, [fecha, hora_fin, hora_inicio], (err, results) => {
+  db.query(querySolapado, [fechaFormateada, hora_fin, hora_inicio], (err, results) => {
     if (err) {
       console.error('❌ Error al verificar solapamientos:', err);
       return res.status(500).json({ error: 'Error en la validación' });
@@ -38,7 +42,7 @@ router.post('/', (req, res) => {
 
     db.query(
       'INSERT INTO disponibilidad (fecha, hora_inicio, hora_fin) VALUES (?, ?, ?)',
-      [fecha, hora_inicio, hora_fin],
+      [fechaFormateada, hora_inicio, hora_fin],
       (err) => {
         if (err) {
           console.error('❌ Error al guardar en la DB:', err);
@@ -53,11 +57,15 @@ router.post('/', (req, res) => {
 // ✅ Editar disponibilidad existente
 router.put('/:id', (req, res) => {
   const id = req.params.id;
-  const { fecha, hora_inicio, hora_fin } = req.body;
+  let { fecha, hora_inicio, hora_fin } = req.body;
 
   if (!fecha || !hora_inicio || !hora_fin) {
     return res.status(400).json({ error: 'Faltan datos' });
   }
+
+  // ✅ Corregir desfase de fecha por zona horaria
+  const fechaLocal = new Date(fecha + 'T00:00:00');
+  const fechaFormateada = fechaLocal.toISOString().slice(0, 10); // yyyy-mm-dd
 
   const querySolapado = `
     SELECT * FROM disponibilidad
@@ -68,7 +76,7 @@ router.put('/:id', (req, res) => {
     )
   `;
 
-  db.query(querySolapado, [fecha, id, hora_fin, hora_inicio], (err, results) => {
+  db.query(querySolapado, [fechaFormateada, id, hora_fin, hora_inicio], (err, results) => {
     if (err) {
       console.error('❌ Error al verificar solapamientos:', err);
       return res.status(500).json({ error: 'Error en la validación' });
@@ -80,7 +88,7 @@ router.put('/:id', (req, res) => {
 
     db.query(
       'UPDATE disponibilidad SET fecha = ?, hora_inicio = ?, hora_fin = ? WHERE id = ?',
-      [fecha, hora_inicio, hora_fin, id],
+      [fechaFormateada, hora_inicio, hora_fin, id],
       (err) => {
         if (err) {
           console.error('❌ Error al actualizar en la DB:', err);
