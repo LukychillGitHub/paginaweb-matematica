@@ -12,8 +12,6 @@ router.get('/', (req, res) => {
 
 // ✅ Agregar nueva franja con fecha exacta
 router.post('/', (req, res) => {
-  console.log('📥 Body recibido:', req.body);
-
   const { fecha, hora_inicio, hora_fin } = req.body;
 
   if (!fecha || !hora_inicio || !hora_fin) {
@@ -52,7 +50,49 @@ router.post('/', (req, res) => {
   });
 });
 
-// ✅ Obtener eventos para el calendario (FullCalendar)
+// ✅ Editar disponibilidad existente
+router.put('/:id', (req, res) => {
+  const id = req.params.id;
+  const { fecha, hora_inicio, hora_fin } = req.body;
+
+  if (!fecha || !hora_inicio || !hora_fin) {
+    return res.status(400).json({ error: 'Faltan datos' });
+  }
+
+  const querySolapado = `
+    SELECT * FROM disponibilidad
+    WHERE fecha = ?
+    AND id != ?
+    AND (
+      ? < hora_fin AND ? > hora_inicio
+    )
+  `;
+
+  db.query(querySolapado, [fecha, id, hora_fin, hora_inicio], (err, results) => {
+    if (err) {
+      console.error('❌ Error al verificar solapamientos:', err);
+      return res.status(500).json({ error: 'Error en la validación' });
+    }
+
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Ese horario se solapa con otra disponibilidad.' });
+    }
+
+    db.query(
+      'UPDATE disponibilidad SET fecha = ?, hora_inicio = ?, hora_fin = ? WHERE id = ?',
+      [fecha, hora_inicio, hora_fin, id],
+      (err) => {
+        if (err) {
+          console.error('❌ Error al actualizar en la DB:', err);
+          return res.status(500).json({ error: 'Error al actualizar' });
+        }
+        res.json({ ok: true });
+      }
+    );
+  });
+});
+
+// ✅ Obtener eventos para el calendario
 router.get('/eventos', (req, res) => {
   db.query('SELECT * FROM disponibilidad', (err, results) => {
     if (err) return res.status(500).json({ error: 'Error al cargar eventos' });
@@ -65,6 +105,7 @@ router.get('/eventos', (req, res) => {
 
       return [
         {
+          id: row.id,
           title: 'Disponible',
           start,
           end,
@@ -72,6 +113,7 @@ router.get('/eventos', (req, res) => {
           color: '#90ee90'
         },
         {
+          id: row.id,
           title: 'Disponible',
           start,
           end,
@@ -81,7 +123,6 @@ router.get('/eventos', (req, res) => {
       ];
     });
 
-    console.log('📤 Eventos enviados al calendario:', eventos);
     res.json(eventos);
   });
 });

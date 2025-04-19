@@ -12,14 +12,14 @@
       color: #333;
       margin: 0;
     }
-  
+
     h1 {
       text-align: center;
       color: #7a4b1c;
       font-size: 28px;
       margin-bottom: 10px;
     }
-  
+
     form {
       max-width: 500px;
       margin: 0 auto 40px auto;
@@ -28,14 +28,14 @@
       border-radius: 14px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.06);
     }
-  
+
     label {
       display: block;
       margin-top: 16px;
       font-weight: 600;
       color: #5a3c1c;
     }
-  
+
     input[type="date"],
     input[type="time"],
     button {
@@ -47,7 +47,7 @@
       border: 1px solid #ddd;
       box-sizing: border-box;
     }
-  
+
     button {
       margin-top: 20px;
       background-color: #25D366;
@@ -57,22 +57,22 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
-  
+
     button:hover {
       background-color: #1ebe5d;
     }
-  
+
     .mensaje {
       margin-top: 15px;
       text-align: center;
       font-weight: 500;
     }
-  
+
     .lista-disponibilidades {
       max-width: 520px;
       margin: 0 auto;
     }
-  
+
     .disponibilidad-item {
       display: flex;
       justify-content: space-between;
@@ -83,19 +83,19 @@
       background: #fff;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
-  
+
     .info-dispo {
       display: flex;
       flex-direction: column;
       font-size: 14px;
       gap: 2px;
     }
-  
+
     .info-dispo span:first-child {
       font-weight: bold;
       color: #5a3c1c;
     }
-  
+
     .disponibilidad-item button {
       background: #e74c3c;
       color: white;
@@ -103,32 +103,39 @@
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
+      margin-left: 8px;
       transition: background-color 0.2s ease;
     }
-  
+
     .disponibilidad-item button:hover {
       background: #c0392b;
     }
-  
-    /* Responsive */
+
+    .disponibilidad-item .edit-btn {
+      background-color: #3498db;
+    }
+
+    .disponibilidad-item .edit-btn:hover {
+      background-color: #2980b9;
+    }
+
     @media (max-width: 600px) {
       form, .lista-disponibilidades {
         width: 90%;
       }
-  
+
       .disponibilidad-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
       }
-  
+
       .disponibilidad-item button {
         align-self: stretch;
         width: 100%;
       }
     }
   </style>
-  
 </head>
 <body>
   <h1>📅 Cargar Disponibilidad</h1>
@@ -147,8 +154,25 @@
     <div class="mensaje" id="mensaje"></div>
   </form>
 
-  <section style="max-width: 500px; margin: 30px auto;">
-    <h2>📅 Fechas cargadas</h2>
+  <!-- 📦 MODAL DE EDICIÓN -->
+  <div id="modal-editar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.4); justify-content:center; align-items:center; z-index:1000;">
+    <form id="form-editar" style="background:white; padding:30px; border-radius:12px; max-width:400px; width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.2); display:flex; flex-direction:column; gap:14px;">
+      <h3 style="margin-top:0;">✏️ Editar Disponibilidad</h3>
+      <input type="hidden" id="modal-id" />
+      <label>Fecha</label>
+      <input type="date" id="modal-fecha" required />
+      <label>Hora de inicio</label>
+      <input type="time" id="modal-inicio" required />
+      <label>Hora de fin</label>
+      <input type="time" id="modal-fin" required />
+
+      <button type="submit" style="background:#25D366; color:white; font-weight:bold; padding:10px; border:none; border-radius:8px;">Guardar cambios</button>
+      <button type="button" id="modal-cerrar" style="background:#ccc; color:black; padding:8px; border:none; border-radius:8px;">Cancelar</button>
+    </form>
+  </div>
+
+  <section class="lista-disponibilidades">
+    <h2>📋 Fechas cargadas</h2>
     <div id="disponibilidades"></div>
   </section>
 
@@ -163,22 +187,34 @@
       const datos = await res.json();
 
       datos.forEach(dispo => {
-        const fecha = new Date(dispo.fecha).toLocaleDateString('es-AR');
+        const fecha = new Date(dispo.fecha).toISOString().split('T')[0];
+        const fechaFormateada = new Date(dispo.fecha).toLocaleDateString('es-AR');
         const inicio = dispo.hora_inicio.slice(0, 5);
         const fin = dispo.hora_fin.slice(0, 5);
 
         const div = document.createElement('div');
-        div.className = 'disponibilidad-card';
+        div.className = 'disponibilidad-item';
         div.innerHTML = `
-          <div class="disponibilidad-info">
-            <div class="fecha">📅 ${fecha}</div>
-            <div>🕒 ${inicio} a ${fin}</div>
+          <div class="info-dispo">
+            <span>📅 ${fechaFormateada}</span>
+            <span>🕒 ${inicio} a ${fin}</span>
           </div>
-          <button onclick="eliminarDisponibilidad(${dispo.id})">Eliminar</button>
+          <div>
+            <button class="edit-btn" onclick="abrirEdicion(${dispo.id}, '${fecha}', '${inicio}', '${fin}')">Editar</button>
+            <button onclick="eliminarDisponibilidad(${dispo.id})">Eliminar</button>
+          </div>
         `;
 
         contenedor.appendChild(div);
       });
+    }
+
+    function abrirEdicion(id, fecha, inicio, fin) {
+      document.getElementById('modal-id').value = id;
+      document.getElementById('modal-fecha').value = fecha;
+      document.getElementById('modal-inicio').value = inicio;
+      document.getElementById('modal-fin').value = fin;
+      document.getElementById('modal-editar').style.display = 'flex';
     }
 
     async function eliminarDisponibilidad(id) {
@@ -227,6 +263,44 @@
       } else {
         const error = await res.json();
         mensaje.textContent = `❌ ${error.error}`;
+      }
+    });
+
+    document.getElementById('modal-cerrar').addEventListener('click', () => {
+      document.getElementById('modal-editar').style.display = 'none';
+    });
+
+    document.getElementById('form-editar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('modal-id').value;
+      const fecha = document.getElementById('modal-fecha').value;
+      const inicio = document.getElementById('modal-inicio').value;
+      const fin = document.getElementById('modal-fin').value;
+
+      if (!fecha || !inicio || !fin) {
+        alert('⚠️ Completá todos los campos.');
+        return;
+      }
+
+      if (fin <= inicio) {
+        alert('⚠️ La hora de fin debe ser posterior a la de inicio.');
+        return;
+      }
+
+      const res = await fetch(`/api/clases/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fecha, hora_inicio: inicio, hora_fin: fin })
+      });
+
+      if (res.ok) {
+        alert('✅ Disponibilidad actualizada');
+        document.getElementById('modal-editar').style.display = 'none';
+        cargarDisponibilidades();
+      } else {
+        const data = await res.json();
+        alert(`❌ ${data.error}`);
       }
     });
 
