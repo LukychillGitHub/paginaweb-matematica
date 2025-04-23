@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db').promise(); // usamos promesas para async/await
+const db = require('../db'); // ✅ ya viene con promesa desde db.js
+
 
 // ✅ Obtener testimonios paginados
 router.get('/', async (req, res) => {
